@@ -12,12 +12,19 @@ if [[ "$SEEDS" != "" ]]; then
 	SEEDS=" --seeds $SEEDS "
 fi
 
-echo "starting tendermint peer ID=$ID"
+echo "starting tendermint peer ID=$ID yo"
 # start ethermint container on the network
+
+echo "docker run -d \
+    --net=$NETWORK_NAME \
+    --ip=$(test/p2p/ip.sh $ID) \
+    --name local_testnet_$ID \
+    -v /ethermint/data test/p2p/data/mach$ID \
+    $DOCKER_IMAGE --datadir /ethermint/data $SEEDS --log_level=notice"
+
 docker run -d \
 	--net=$NETWORK_NAME \
 	--ip=$(test/p2p/ip.sh $ID) \
 	--name local_testnet_$ID \
-	--entrypoint ethermint \
-	-e TMROOT=/go/src/github.com/tendermint/ethermint/test/p2p/data/mach$ID \
-	$DOCKER_IMAGE --datadir \$TMROOT $SEEDS --log_level=notice
+    -v /ethermint/data test/p2p/data/mach$ID \
+	$DOCKER_IMAGE --datadir /ethermint/data $SEEDS --log_level=notice
