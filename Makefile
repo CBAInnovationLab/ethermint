@@ -2,7 +2,7 @@ TMROOT = $${TMROOT:-$$HOME/.tendermint}
 PACKAGES=$(shell go list ./... | grep -v '/vendor/')
 
 install: get_vendor_deps
-	@go install ./cmd/ethermint
+	@go install -ldflags "-X main.versionCommit=`git rev-parse HEAD`" ./cmd/ethermint
 
 test:
 	@echo "--> Running go test"

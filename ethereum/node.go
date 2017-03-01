@@ -10,8 +10,6 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
-var clientIdentifier = "geth" // Client identifier to advertise over the network
-
 // MakeSystemNode sets up a local node and configures the services to launch
 func MakeSystemNode(name, version string, ctx *cli.Context) *node.Node {
 	params.TargetGasLimit = common.String2Big(ctx.GlobalString(utils.TargetGasLimitFlag.Name))
@@ -20,7 +18,8 @@ func MakeSystemNode(name, version string, ctx *cli.Context) *node.Node {
 	stackConf := &node.Config{
 		DataDir:     utils.MakeDataDir(ctx),
 		PrivateKey:  utils.MakeNodeKey(ctx),
-		Name:        clientIdentifier,
+		Name:        name,
+		Version:     version,
 		IPCPath:     utils.MakeIPCPath(ctx),
 		HTTPHost:    utils.MakeHTTPRpcHost(ctx),
 		HTTPPort:    ctx.GlobalInt(utils.RPCPortFlag.Name),

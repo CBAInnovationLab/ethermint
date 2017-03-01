@@ -34,6 +34,7 @@ var (
 		Usage: "Data directory for the databases and keystore",
 		Value: utils.DirectoryString{DefaultDataDir()},
 	}
+	versionCommit   string
 )
 
 const (
@@ -54,6 +55,9 @@ func init() {
 	verString = fmt.Sprintf("%d.%d.%d", versionMajor, versionMinor, versionPatch)
 	if versionMeta != "" {
 		verString += "-" + versionMeta
+	}
+	if versionCommit != "" {
+		verString += "-" + versionCommit[:8]
 	}
 	cliApp = newCliApp(verString, "the ethermint command line interface")
 	cliApp.Action = abciEthereumAction
