@@ -16,12 +16,13 @@ RUN apt-get install -y solc
 RUN mkdir /ethermint && chmod 777 /ethermint
 RUN useradd -ms /bin/bash ethermint
 RUN chown ethermint /var/run
-USER ethermint 
+RUN mkdir -p /var/app
+COPY entrypoint.sh /var/app/entrypoint.sh
+RUN chmod +x /var/app/entrypoint.sh
+USER ethermint
 
-RUN mkdir -p /ethermint/setup
-COPY genesis.json /ethermint/setup/
-RUN ethermint -datadir /ethermint/data init /ethermint/setup/genesis.json
-COPY keystore /ethermint/data/keystore
 EXPOSE 8545
+EXPOSE 46656
+VOLUME /home/ethermint
 
-CMD ["ethermint", "-datadir", "/ethermint/data"]
+ENTRYPOINT ["/var/app/entrypoint.sh"]
