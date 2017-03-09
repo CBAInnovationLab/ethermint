@@ -2,7 +2,10 @@ FROM golang:1.6
 MAINTAINER ethan@tendermint.com
 
 RUN curl https://glide.sh/get | sh
-RUN go get github.com/tendermint/ethermint/cmd/ethermint
+RUN mkdir -p $GOPATH/github.com/tendermint/ethermint
+WORKDIR $GOPATH/src/github.com/tendermint/ethermint
+RUN git clone https://github.com/CBAInnovationLab/ethermint.git .
+RUN go install ./cmd/ethermint
 
 RUN mkdir /ethermint && chmod 777 /ethermint
 RUN useradd -ms /bin/bash ethermint
